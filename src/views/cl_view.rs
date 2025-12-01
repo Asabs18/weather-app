@@ -12,10 +12,18 @@ impl ClView {
     }
 
     pub fn display(&self) {
-        println!("Location: {}", self.weather_info.location);
-        println!(
-            "Temperature: {}°C",
-            self.weather_info.weather_data.temperature
-        );
+        if self.weather_info.weather_data.temperature.is_none() {
+            println!(
+                "No weather data available for {}",
+                self.weather_info.location
+            );
+            return;
+        } else {
+            println!("Location: {}", self.weather_info.location);
+            println!(
+                "Temperature: {}°C",
+                self.weather_info.weather_data.temperature.unwrap_or(0.0)
+            );
+        }
     }
 }

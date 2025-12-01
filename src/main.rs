@@ -15,10 +15,7 @@ fn main() {
         .read_line(&mut location)
         .expect("Failed to read line");
 
-    let weather_info = models::weather_info::WeatherInfo::new(
-        location.trim().to_string(),
-        models::weather_info::WeatherData { temperature: 18.5 },
-    );
+    let weather_info = models::weather_info::WeatherInfo::new(location.trim().to_string());
 
     let cl_controller = controllers::cl_controller::ClController::new(weather_info);
 
