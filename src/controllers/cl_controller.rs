@@ -1,17 +1,25 @@
-use crate::models::weather_info::WeatherInfo;
+// src/controllers/cl_controller.rs
+
+use crate::repositories::weather_repository::WeatherRepository;
 use crate::views::cl_view::ClView;
 
-pub struct ClController {
-    pub cl_view: ClView,
+// Controller for handling command-line weather requests
+// Coordinates between the repository (data) and view (display)
+pub struct ClController<WeatherRepo: WeatherRepository> {
+    repository: WeatherRepo,
 }
 
-impl ClController {
-    pub fn new(weather_info: WeatherInfo) -> Self {
-        let cl_view = ClView::from_weather_info(weather_info.clone());
-        ClController { cl_view }
+impl<WeatherRepo: WeatherRepository> ClController<WeatherRepo> {
+    // Creates a new controller with the given repository
+    pub fn new(repository: WeatherRepo) -> Self {
+        ClController { repository }
     }
 
-    pub fn show_weather(&self) {
-        self.cl_view.display();
+    // Fetches and displays weather information for the given location
+    pub fn show_weather(&self, location: &str) {
+        match self.repository.fetch_weather(location) {
+            Ok(weather_info) => ClView::display(&weather_info),
+            Err(e) => eprintln!("Error: {}", e),
+        }
     }
 }

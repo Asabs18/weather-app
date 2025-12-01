@@ -1,23 +1,30 @@
+// Main entry point for the weather application (src/main.rs)
+
 mod controllers;
 mod models;
+mod repositories;
 mod views;
 
-use std::io;
+use controllers::cl_controller::ClController;
+use repositories::weather_repository::MockWeatherRepository;
+use std::io::{self, Write};
 
+// Entry point for the weather application
 fn main() {
     println!("Welcome to the Rust Weather App!");
+    print!("Where are you? ");
+    io::stdout().flush().unwrap();
 
-    println!("Where are you?");
-
+    // Read user input for location
     let mut location = String::new();
-
     io::stdin()
         .read_line(&mut location)
         .expect("Failed to read line");
 
-    let weather_info = models::weather_info::WeatherInfo::new(location.trim().to_string());
+    // Initialize repository and controller
+    let repository = MockWeatherRepository;
+    let controller = ClController::new(repository);
 
-    let cl_controller = controllers::cl_controller::ClController::new(weather_info);
-
-    cl_controller.show_weather();
+    // Display weather information
+    controller.show_weather(location.trim());
 }

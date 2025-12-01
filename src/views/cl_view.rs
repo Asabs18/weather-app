@@ -1,29 +1,21 @@
+// src/views/cl_view.rs
+
 use crate::models::weather_info::WeatherInfo;
 
-pub struct ClView {
-    pub weather_info: WeatherInfo,
-}
+// Command-line view for displaying weather information
+pub struct ClView;
 
 impl ClView {
-    pub fn from_weather_info(weather_info: WeatherInfo) -> Self {
-        ClView {
-            weather_info: weather_info,
-        }
-    }
-
-    pub fn display(&self) {
-        if self.weather_info.weather_data.temperature.is_none() {
-            println!(
-                "No weather data available for {}",
-                self.weather_info.location
-            );
-            return;
-        } else {
-            println!("Location: {}", self.weather_info.location);
-            println!(
-                "Temperature: {}°C",
-                self.weather_info.weather_data.temperature.unwrap_or(0.0)
-            );
+    // Displays weather information to the console
+    pub fn display(weather_info: &WeatherInfo) {
+        match weather_info.weather_data.temperature {
+            Some(temp) => {
+                println!("Location: {}", weather_info.location);
+                println!("Temperature: {}°C", temp);
+            }
+            None => {
+                println!("No weather data available for {}", weather_info.location);
+            }
         }
     }
 }

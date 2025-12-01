@@ -1,42 +1,27 @@
+// src/models/weather_info.rs
+
+// Represents weather data for a location
+#[derive(Clone, Debug)]
 pub struct WeatherData {
+    // Temperature in Celsius
     pub temperature: Option<f32>,
 }
 
+// Complete weather information including location and data
+#[derive(Clone, Debug)]
 pub struct WeatherInfo {
+    // Location name
     pub location: String,
+    // Weather data for this location
     pub weather_data: WeatherData,
 }
 
 impl WeatherInfo {
-    pub fn new(location: String) -> Self {
-        let weather_data = Self::create_weather_data(location.clone());
-
+    // Creates a new WeatherInfo instance
+    pub fn new(location: String, weather_data: WeatherData) -> Self {
         WeatherInfo {
             location,
             weather_data,
-        }
-    }
-
-    pub fn create_weather_data(location: String) -> WeatherData {
-        if location.to_lowercase() == "london" {
-            return WeatherData {
-                temperature: Some(15.0),
-            };
-        } else if location.to_lowercase() == "boston" {
-            return WeatherData {
-                temperature: Some(22.0),
-            };
-        } else {
-            return WeatherData { temperature: None };
-        }
-    }
-
-    pub fn clone(&self) -> Self {
-        WeatherInfo {
-            location: self.location.clone(),
-            weather_data: WeatherData {
-                temperature: self.weather_data.temperature,
-            },
         }
     }
 }
