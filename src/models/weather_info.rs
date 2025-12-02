@@ -1,10 +1,12 @@
 // src/models/weather_info.rs
 
+use serde::Deserialize;
+
 // Represents weather data for a location
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Deserialize)]
 pub struct WeatherData {
     // Temperature in Celsius
-    pub temperature: Option<f32>,
+    pub temperature: Option<f64>,
 }
 
 // Complete weather information including location and data
