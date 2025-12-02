@@ -1,30 +1,42 @@
-// Main entry point for the weather application (src/main.rs)
-
+/// Weather application entry point
+///
+/// Uses MVC architecture with a repository pattern:
+/// - Models: Data structures for weather information
+/// - Views: Console display logic
+/// - Controllers: Coordinate between repository and view
+/// - Repositories: Handle API data fetching
+mod constants;
 mod controllers;
+mod errors;
 mod models;
 mod repositories;
+mod utils;
 mod views;
 
 use controllers::cl_controller::ClController;
 use repositories::weather_repository::ApiWeatherRepository;
 use std::io::{self, Write};
+use std::process;
 
-/// Entry point for the weather application
 fn main() {
+    if let Err(e) = run() {
+        eprintln!("Error: {}", e);
+        process::exit(1);
+    }
+}
+
+/// Main application logic with proper error handling
+fn run() -> Result<(), Box<dyn std::error::Error>> {
     println!("Welcome to the Rust Weather App!");
     print!("Where are you? ");
-    io::stdout().flush().unwrap();
+    io::stdout().flush()?;
 
-    // Read user input for location
     let mut location = String::new();
-    io::stdin()
-        .read_line(&mut location)
-        .expect("Failed to read line");
+    io::stdin().read_line(&mut location)?;
 
-    // Initialize repository and controller
     let repository = ApiWeatherRepository::new();
     let controller = ClController::new(repository);
 
-    // Display weather information
-    controller.show_weather(location.trim());
+    controller.show_weather(location.trim())?;
+    Ok(())
 }

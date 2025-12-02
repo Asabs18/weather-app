@@ -1,25 +1,24 @@
-// src/controllers/cl_controller.rs
+//! Command-line controller for coordinating weather data flow
 
+use crate::errors::WeatherError;
 use crate::repositories::weather_repository::WeatherRepository;
 use crate::views::cl_view::ClView;
 
-// Controller for handling command-line weather requests
-// Coordinates between the repository (data) and view (display)
+/// Controller that coordinates between repository (data) and view (display)
+/// Generic over WeatherRepository to allow different data sources
 pub struct ClController<WeatherRepo: WeatherRepository> {
     repository: WeatherRepo,
 }
 
 impl<WeatherRepo: WeatherRepository> ClController<WeatherRepo> {
-    // Creates a new controller with the given repository
     pub fn new(repository: WeatherRepo) -> Self {
         ClController { repository }
     }
 
-    // Fetches and displays weather information for the given location
-    pub fn show_weather(&self, location: &str) {
-        match self.repository.fetch_weather(location) {
-            Ok(weather_info) => ClView::display(&weather_info),
-            Err(e) => eprintln!("Error: {}", e),
-        }
+    /// Fetches weather data for location and displays it
+    pub fn show_weather(&self, location: &str) -> Result<(), WeatherError> {
+        let weather_info = self.repository.fetch_weather(location)?;
+        ClView::display(&weather_info);
+        Ok(())
     }
 }
