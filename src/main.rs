@@ -6,10 +6,10 @@ mod repositories;
 mod views;
 
 use controllers::cl_controller::ClController;
-use repositories::weather_repository::MockWeatherRepository;
+use repositories::weather_repository::ApiWeatherRepository;
 use std::io::{self, Write};
 
-// Entry point for the weather application
+/// Entry point for the weather application
 fn main() {
     println!("Welcome to the Rust Weather App!");
     print!("Where are you? ");
@@ -22,7 +22,7 @@ fn main() {
         .expect("Failed to read line");
 
     // Initialize repository and controller
-    let repository = MockWeatherRepository;
+    let repository = ApiWeatherRepository::new();
     let controller = ClController::new(repository);
 
     // Display weather information

@@ -16,7 +16,7 @@ weather-app/
 │   │   └── weather_info.rs  # WeatherInfo and WeatherData structs
 │   ├── repositories/        # Repository layer - data fetching
 │   │   ├── mod.rs
-│   │   └── weather_repository.rs # WeatherRepository trait and mock implementation
+│   │   └── weather_repository.rs # WeatherRepository trait and API implementation
 │   └── views/               # View layer - presentation
 │       ├── mod.rs
 │       └── cl_view.rs       # Command-line view
@@ -28,22 +28,30 @@ weather-app/
 This project follows the **Model-View-Controller (MVC)** pattern with a repository layer:
 
 - **Models** (`models/`): Define data structures (`WeatherInfo`, `WeatherData`)
-- **Views** (`views/`): Handle presentation logic (console output, temperature conversion)
+- **Views** (`views/`): Handle presentation logic (console output)
 - **Controllers** (`controllers/`): Coordinate between repositories and views
-- **Repositories** (`repositories/`): Handle data fetching from Open-Meteo API
+- **Repositories** (`repositories/`): Handle data fetching via external APIs
 
 ## Features
 
 - Interactive command-line interface
-- Real-time weather data from Open-Meteo API
-- Temperature display in both Celsius and Fahrenheit
-- Support for multiple locations (London, Boston)
-- Extensible architecture for adding more locations
+- **Real-time weather data** from Open-Meteo API
+- **Geocoding support** via OpenStreetMap Nominatim API
+- Temperature display in Celsius
+- Support for **any global location** (not limited to predefined cities)
+- Extensible architecture for adding more weather data fields
+
+### APIs Used
+
+- **OpenStreetMap Nominatim**: Converts location names to geographic coordinates
+- **Open-Meteo**: Provides real-time weather data (temperature, etc.)
 
 ## Dependencies
 
-- `serde` - Serialization framework for JSON parsing
-- `reqwest` - HTTP client for API requests
+- `reqwest` - HTTP client for making API requests (with blocking and JSON features)
+- `serde` - Serialization framework for parsing JSON responses
+- `serde_json` - JSON parsing utilities
+- `urlencoding` - URL encoding for location names in API requests
 
 ## Building
 
