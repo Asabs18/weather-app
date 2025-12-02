@@ -28,19 +28,22 @@ weather-app/
 This project follows the **Model-View-Controller (MVC)** pattern with a repository layer:
 
 - **Models** (`models/`): Define data structures (`WeatherInfo`, `WeatherData`)
-- **Views** (`views/`): Handle presentation logic (console output)
+- **Views** (`views/`): Handle presentation logic (console output, temperature conversion)
 - **Controllers** (`controllers/`): Coordinate between repositories and views
-- **Repositories** (`repositories/`): Handle data fetching (currently using mock data)
+- **Repositories** (`repositories/`): Handle data fetching from Open-Meteo API
 
 ## Features
 
 - Interactive command-line interface
-- Mock weather data for sample locations (London, Boston)
-- Extensible architecture for adding real API integration
+- Real-time weather data from Open-Meteo API
+- Temperature display in both Celsius and Fahrenheit
+- Support for multiple locations (London, Boston)
+- Extensible architecture for adding more locations
 
 ## Dependencies
 
-- `serde` - Serialization framework (prepared for API integration)
+- `serde` - Serialization framework for JSON parsing
+- `reqwest` - HTTP client for API requests
 
 ## Building
 
