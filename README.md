@@ -164,7 +164,6 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 - Weather data provided by [Open-Meteo](https://open-meteo.com/)
 - Geocoding by [OpenStreetMap Nominatim](https://nominatim.org/)
 - GUI powered by [egui](https://github.com/emilk/egui)
-- GUI powered by [egui](https://github.com/emilk/egui)
 
 ---
 
