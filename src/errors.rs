@@ -18,10 +18,10 @@ pub enum WeatherError {
 impl fmt::Display for WeatherError {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         match self {
-            WeatherError::NetworkError(msg) => write!(f, "Network error: {}", msg),
-            WeatherError::ParseError(msg) => write!(f, "Parse error: {}", msg),
-            WeatherError::LocationNotFound(loc) => write!(f, "Location '{}' not found", loc),
-            WeatherError::ApiError(msg) => write!(f, "API error: {}", msg),
+            WeatherError::NetworkError(msg) => write!(f, "Network error: {msg}"),
+            WeatherError::ParseError(msg) => write!(f, "Parse error: {msg}"),
+            WeatherError::LocationNotFound(loc) => write!(f, "Location '{loc}' not found"),
+            WeatherError::ApiError(msg) => write!(f, "API error: {msg}"),
         }
     }
 }

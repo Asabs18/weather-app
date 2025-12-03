@@ -1,10 +1,30 @@
 [package]
 name = "weather-app"
-version = "0.1.0"
-edition = "2024"
+version = "1.0.0"
+edition = "2021"
+authors = ["Aidan <asabs18@github.com>"]
+description = "A modern weather application with CLI and GUI interfaces, powered by Open-Meteo API"
+repository = "https://github.com/Asabs18/weather-app"
+license = "MIT"
+keywords = ["weather", "cli", "gui", "forecast", "egui"]
+categories = ["command-line-utilities", "gui"]
+
+[lib]
+name = "weather_app"
+path = "src/lib.rs"
+
+[[bin]]
+name = "weather-app"
+path = "src/main.rs"
+
+[[bin]]
+name = "gui_main"
+path = "src/bin/gui_main.rs"
 
 [dependencies]
 reqwest = { version = "0.12.24", features = ["blocking", "json"] }
 serde = { version = "1.0.228", features = ["derive"] }
 serde_json = "1.0.145"
 urlencoding = "2.1"
+eframe = "0.29"
+egui = "0.29"

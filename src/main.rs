@@ -1,26 +1,18 @@
-/// Weather application entry point
+use std::io::{self, Write};
+use std::process;
+/// Weather application entry point (CLI version)
 ///
 /// Uses MVC architecture with a repository pattern:
 /// - Models: Data structures for weather information
 /// - Views: Console display logic
 /// - Controllers: Coordinate between repository and view
 /// - Repositories: Handle API data fetching
-mod constants;
-mod controllers;
-mod errors;
-mod models;
-mod repositories;
-mod utils;
-mod views;
-
-use controllers::cl_controller::ClController;
-use repositories::weather_repository::ApiWeatherRepository;
-use std::io::{self, Write};
-use std::process;
+use weather_app::controllers::cl_controller::ClController;
+use weather_app::repositories::weather_repository::ApiWeatherRepository;
 
 fn main() {
     if let Err(e) = run() {
-        eprintln!("Error: {}", e);
+        eprintln!("Error: {e}");
         process::exit(1);
     }
 }

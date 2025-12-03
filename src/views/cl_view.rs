@@ -30,21 +30,21 @@ impl ClView {
 
         if let Some(temp) = current.temperature {
             let fahrenheit = Temperature::celsius_to_fahrenheit(temp);
-            println!("Temperature: {:.1}°C / {:.1}°F", temp, fahrenheit);
+            println!("Temperature: {temp:.1}°C / {fahrenheit:.1}°F");
         }
 
         if let Some(apparent) = current.apparent_temperature {
             let fahrenheit = Temperature::celsius_to_fahrenheit(apparent);
-            println!("Feels Like: {:.1}°C / {:.1}°F", apparent, fahrenheit);
+            println!("Feels Like: {apparent:.1}°C / {fahrenheit:.1}°F");
         }
 
         if let Some(humidity) = current.humidity {
-            println!("Humidity: {:.0}%", humidity);
+            println!("Humidity: {humidity:.0}%");
         }
 
         if let Some(precip) = current.precipitation {
             let inches = Distance::mm_to_inches(precip);
-            println!("Precipitation: {:.1} mm / {:.2} in", precip, inches);
+            println!("Precipitation: {precip:.1} mm / {inches:.2} in");
         }
 
         if let Some(code) = current.weather_code {
@@ -57,7 +57,7 @@ impl ClView {
 
         if let Some(speed) = current.wind_speed {
             let mph = Speed::kmh_to_mph(speed);
-            print!("Wind: {:.1} km/h / {:.1} mph", speed, mph);
+            print!("Wind: {speed:.1} km/h / {mph:.1} mph");
             if let Some(direction) = current.wind_direction {
                 println!(
                     " from {}° ({})",
@@ -70,17 +70,17 @@ impl ClView {
         }
 
         if let Some(clouds) = current.cloud_cover {
-            println!("Cloud Cover: {:.0}%", clouds);
+            println!("Cloud Cover: {clouds:.0}%");
         }
 
         if let Some(pressure) = current.pressure {
             let inhg = Pressure::hpa_to_inhg(pressure);
-            println!("Pressure: {:.1} hPa / {:.2} inHg", pressure, inhg);
+            println!("Pressure: {pressure:.1} hPa / {inhg:.2} inHg");
         }
 
         if let Some(visibility) = current.visibility {
             let feet = Distance::meters_to_feet(visibility);
-            println!("Visibility: {:.0} meters / {:.0} feet", visibility, feet);
+            println!("Visibility: {visibility:.0} meters / {feet:.0} feet");
         }
     }
 
@@ -105,11 +105,11 @@ impl ClView {
             &hour.time
         };
 
-        print!("{}:00 - ", time_display);
+        print!("{time_display}:00 - ");
 
         if let Some(temp) = hour.temperature {
             let fahrenheit = Temperature::celsius_to_fahrenheit(temp);
-            print!("{:.1}°C / {:.1}°F", temp, fahrenheit);
+            print!("{temp:.1}°C / {fahrenheit:.1}°F");
         }
 
         if let Some(code) = hour.weather_code {
@@ -117,19 +117,19 @@ impl ClView {
         }
 
         if let Some(precip_prob) = hour.precipitation_probability {
-            print!(" | Rain: {:.0}%", precip_prob);
+            print!(" | Rain: {precip_prob:.0}%");
         }
 
         if let Some(precip) = hour.precipitation {
             if precip > 0.0 {
                 let inches = Distance::mm_to_inches(precip);
-                print!(" ({:.1}mm / {:.2}in)", precip, inches);
+                print!(" ({precip:.1}mm / {inches:.2}in)");
             }
         }
 
         if let Some(wind) = hour.wind_speed {
             let mph = Speed::kmh_to_mph(wind);
-            print!(" | Wind: {:.0} km/h / {:.0} mph", wind, mph);
+            print!(" | Wind: {wind:.0} km/h / {mph:.0} mph");
         }
 
         println!();
@@ -153,10 +153,7 @@ impl ClView {
         if let (Some(max), Some(min)) = (day.temperature_max, day.temperature_min) {
             let min_f = Temperature::celsius_to_fahrenheit(min);
             let max_f = Temperature::celsius_to_fahrenheit(max);
-            println!(
-                "  Temperature: {:.1}°C to {:.1}°C / {:.1}°F to {:.1}°F",
-                min, max, min_f, max_f
-            );
+            println!("  Temperature: {min:.1}°C to {max:.1}°C / {min_f:.1}°F to {max_f:.1}°F");
         }
 
         if let Some(code) = day.weather_code {
@@ -166,9 +163,9 @@ impl ClView {
         if let Some(precip_sum) = day.precipitation_sum {
             if precip_sum > 0.0 {
                 let inches = Distance::mm_to_inches(precip_sum);
-                print!("  Precipitation: {:.1} mm / {:.2} in", precip_sum, inches);
+                print!("  Precipitation: {precip_sum:.1} mm / {inches:.2} in");
                 if let Some(prob) = day.precipitation_probability {
-                    print!(" ({}% chance)", prob);
+                    print!(" ({prob}% chance)");
                 }
                 println!();
             }
@@ -176,13 +173,13 @@ impl ClView {
 
         if let Some(wind) = day.wind_speed_max {
             let mph = Speed::kmh_to_mph(wind);
-            println!("  Max Wind Speed: {:.1} km/h / {:.1} mph", wind, mph);
+            println!("  Max Wind Speed: {wind:.1} km/h / {mph:.1} mph");
         }
 
         if let (Some(sunrise), Some(sunset)) = (&day.sunrise, &day.sunset) {
             let sunrise_time = sunrise.split('T').nth(1).unwrap_or(sunrise);
             let sunset_time = sunset.split('T').nth(1).unwrap_or(sunset);
-            println!("  Sunrise: {} | Sunset: {}", sunrise_time, sunset_time);
+            println!("  Sunrise: {sunrise_time} | Sunset: {sunset_time}");
         }
     }
 
@@ -198,7 +195,7 @@ impl ClView {
             61 | 63 | 65 => "Rain",
             71 | 73 | 75 => "Snow",
             77 => "Snow grains",
-            80 | 81 | 82 => "Rain showers",
+            80..=82 => "Rain showers",
             85 | 86 => "Snow showers",
             95 => "Thunderstorm",
             96 | 99 => "Thunderstorm with hail",
@@ -210,14 +207,14 @@ impl ClView {
     fn wind_direction_name(degrees: f64) -> &'static str {
         let normalized = ((degrees % 360.0) + 360.0) % 360.0;
         match normalized {
-            d if d >= 337.5 || d < 22.5 => "N",
-            d if d >= 22.5 && d < 67.5 => "NE",
-            d if d >= 67.5 && d < 112.5 => "E",
-            d if d >= 112.5 && d < 157.5 => "SE",
-            d if d >= 157.5 && d < 202.5 => "S",
-            d if d >= 202.5 && d < 247.5 => "SW",
-            d if d >= 247.5 && d < 292.5 => "W",
-            d if d >= 292.5 && d < 337.5 => "NW",
+            d if !(22.5..337.5).contains(&d) => "N",
+            d if (22.5..67.5).contains(&d) => "NE",
+            d if (67.5..112.5).contains(&d) => "E",
+            d if (112.5..157.5).contains(&d) => "SE",
+            d if (157.5..202.5).contains(&d) => "S",
+            d if (202.5..247.5).contains(&d) => "SW",
+            d if (247.5..292.5).contains(&d) => "W",
+            d if (292.5..337.5).contains(&d) => "NW",
             _ => "Unknown",
         }
     }

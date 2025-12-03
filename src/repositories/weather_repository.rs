@@ -83,6 +83,12 @@ pub struct ApiWeatherRepository {
     client: Client,
 }
 
+impl Default for ApiWeatherRepository {
+    fn default() -> Self {
+        Self::new()
+    }
+}
+
 impl ApiWeatherRepository {
     pub fn new() -> Self {
         ApiWeatherRepository {
@@ -204,8 +210,7 @@ impl ApiWeatherRepository {
     // Constructs the Open-Meteo API URL with query parameters
     fn build_weather_api_url(lat: f64, lon: f64) -> String {
         format!(
-            "{}?latitude={}&longitude={}&current=temperature_2m,apparent_temperature,relative_humidity_2m,precipitation,weather_code,wind_speed_10m,wind_direction_10m,cloud_cover,surface_pressure,visibility&hourly=temperature_2m,apparent_temperature,precipitation_probability,precipitation,weather_code,wind_speed_10m,relative_humidity_2m&daily=temperature_2m_max,temperature_2m_min,weather_code,precipitation_sum,precipitation_probability_max,wind_speed_10m_max,sunrise,sunset&forecast_days={}",
-            OPEN_METEO_API_URL, lat, lon, DAILY_FORECAST_DAYS
+            "{OPEN_METEO_API_URL}?latitude={lat}&longitude={lon}&current=temperature_2m,apparent_temperature,relative_humidity_2m,precipitation,weather_code,wind_speed_10m,wind_direction_10m,cloud_cover,surface_pressure,visibility&hourly=temperature_2m,apparent_temperature,precipitation_probability,precipitation,weather_code,wind_speed_10m,relative_humidity_2m&daily=temperature_2m_max,temperature_2m_min,weather_code,precipitation_sum,precipitation_probability_max,wind_speed_10m_max,sunrise,sunset&forecast_days={DAILY_FORECAST_DAYS}"
         )
     }
 }
